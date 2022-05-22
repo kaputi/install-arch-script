@@ -1,0 +1,136 @@
+#!/bin/bash
+
+: '
+'
+
+if [[ -f $(pwd)/functions ]]; then
+	source functions
+else
+	echo "missing file: functions"
+	exit 1
+fi
+
+if [[ -f $(pwd)/config ]]; then
+	source config
+else
+	echo "missing file: config"
+	exit 1
+fi
+
+#}}}
+arch_chroot() { #{{{
+	arch-chroot /mnt /bin/bash -c "${1}"
+}
+#}}}
+
+#========================= RUN ============================
+
+pause_function
+pacman -Sy
+
+print_title "ARCHLINUX ULTIMATE INSTALL - https://github.com/helmuthdu/aui"
+
+echo "1) loadkeys"
+loadkeys $KEYMAP
+
+echo "2) update system clock"
+timedatectl set-ntp true
+
+echo "3) Mount options"
+if [ $FORMAT_OPTIONS = 2 ];then
+  if[ $PARTITION_TABLE = 1 ];then
+    # TODO create partitiontable
+  fi
+
+  if[ $FORMAT_ROOT = 1 ];then
+    mkfs.ext4 $ROOT_DRIVE
+  fi
+
+  if[ $FORMAT_BOOT = 1 ];then
+    mkfs.fat -F 32 $BOOT_DRIVE
+  fi
+
+
+  if[ $FORMAT_HOME = 1 ];then
+    # TODO ask if you are sure
+    # mkfs.ext4 $HOME_DRIVE
+  fi
+
+  mount $ROOT_DRIVE /mnt
+  mkdir /mnt/home /mnt/boot
+  mount $HOME_DRIVE /mnt/home
+  mount $BOOT_DIVE /mnt/boot
+fi
+
+if[ $SWAP_DRIVE = -1 ];then
+  if[ $FORMAT_SWAP = 1 ];then
+    dd if=/dev/zero of=/mnt/swapfile bs=1G count=$SWAP_SIZE status=progress
+    chmod 0600 /mnt/swapfile
+    mkswap -U clear /mnt/swapfile
+  fi
+  swapon /mnt/swapfile
+else
+  if[ $FORMAT_SWAP = 1 ];then
+    mkswap $SWAP_DRIVE
+  fi
+  swapon $SWAP_DRIVE
+fi
+
+if
+
+# TODO SELECT MIRRORS
+
+echo "4) install base system"
+pacstrap /mnt base base-devel linux linux-firmware $CPU-ucode vi vim nano man-db man-pages texinfo networkmanager git bluez ranger wget
+
+genfstab -U /mnt >> /mnt/etc/fstab
+# TODO check if it creates entry for swapfile
+
+echo "5) setup locale, timezone, keymap"
+ln -sf /usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
+arch_chroot "hwclock --systohc"
+
+echo "LANG=$LOCALE" >> /mnt/etc/locale.conf
+arch_chroot "locale-gen"
+
+echo "KEYMAP=$KEYMAP" >> /mnt/vconsole.conf
+
+echo "5) mkinitcpio"
+arch_chroot "mkinitcpio -P"
+
+echo "6) Root password"
+echo "input root passowrd"
+arch_chroot "passwd"
+
+echo "7) Bootloader"
+arch_chroot "bootctl install"
+rm /mnt/boot/loader/loader.conf -f
+echo "default arch.conf" >> /mnt/boot/loader/loader.conf
+echo "timeout 1" >> /mnt/boot/loader/loader.conf
+ 
+rm /mnt/boot/loader/entries/arch.conf -f
+echo "title Arch Linux" >> /mnt/boot/loader/entries/arch.conf
+echo "linux /vmlinuz-linux" >> /mnt/boot/loader/entries/arch.conf
+echo "initrd /$CPU-ucode.img" >> /mnt/boot/loader/entries/arch.conf
+echo "initrd /initramfs-linux.img" >> /mnt/boot/loader/entries/arch.conf
+echo "options root=UUID=$(blkid -o value -s UUID ${ROOT_DRIVE}) rw" >> /mnt/boot/loader/entries/arch.conf
+
+rm /mnt/boot/loader/entries/arch-fallback.conf -f
+echo "title Arch Linux Fallback" >> /mnt/boot/loader/entries/arch.conf
+echo "linux /vmlinuz-linux" >> /mnt/boot/loader/entries/arch.conf
+echo "initrd /$CPU-ucode.img" >> /mnt/boot/loader/entries/arch.conf
+echo "initrd /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch.conf
+echo "options root=UUID=$(blkid -o value -s UUID ${ROOT_DRIVE}) rw" >> /mnt/boot/loader/entries/arch.conf
+
+echo "8) User setup"
+# TODO check if it needs to create a new home and change -M for -m
+arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M"
+echo "input user passowrd"
+passwd $USERNAME
+
+echo "9) Setup ssd"
+# TODO
+
+echo "10) enable services"
+arch_chroot "systemctl enable NetworkManager"
+arch_chroot "systemctl enable bluetooth"

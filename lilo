@@ -1,0 +1,45 @@
+#!/bin/bash
+
+
+if [[ -f $(pwd)/functions ]]; then
+	source functions
+else
+	echo "missing file: functions"
+	exit 1
+fi
+
+# Allow wheel to use sudo
+print_title "Sudo"
+sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /etc/sudoers
+  
+#aur helper
+print_title "yay"
+git clone  /tmp/yay
+cd /tmp/yay
+makepkg -si
+
+
+print_title "installing packages"
+yay -Sy
+yay -S zsh openssh lazygit lazydocker bat lsd bottom timeshift
+
+#zsh
+print_title "configure zsh"
+echo 'export ZDOTDIR=$HOME/.config/zsh' >> /etc/zsh/zshenv 
+
+#ssh 
+# print_title "ssh"
+
+# lazys
+# print_title "lazy docker/git"
+
+#bat
+# print_title "bat"
+
+#lsd
+# print_title "lsd"
+
+#bottom
+# print_title "bottom"
+
+# TODO: /etc/logind.conf for lid actions handlelidswitch + externalpower

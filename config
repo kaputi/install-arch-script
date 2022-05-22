@@ -1,0 +1,36 @@
+#!/bin/bash
+
+CPU=intel # for microcode intel-ucode or amd-ucode
+SSD=1 #setup trim if available
+
+USERNAME=eduardo
+CREATEHOME=0
+HOME_DIR=/home/eduardo
+GROUP=eduardo
+OTHER_GROUPS=wheel,docker
+
+TIMEZONE=Europe/Dublin
+KEYMAP=uk
+LOCALE=en_GB.UTF-8
+HOSTNAME=chichiServer
+
+# IF MANUAL IS SELECTED, CREATE PARTITION TABLE BEFORE RUNING SCRIPT,
+# AND SET THE PATH TO THE PARTITIONS
+FORMAT_OPTIONS=2 # 1 for manual 2 for read from this file
+PARTITION_TABLE=0 # 1 will recreate partition table(wiping everything)
+
+ROOT_DRIVE=/dev/sda3
+ROOT_SIZE=20 # SIZE IN GB for recreate partition table
+FORMAT_ROOT=1
+
+BOOT_DRIVE=/dev/sda1
+BOOT_SIZE=500 # SIZE IN MB for recreate partition table
+FORMAT_BOOT=1
+
+HOME_DRIVE=/dev/sda4
+HOME_SIZE=-1 # SIZE IN GB for recreate partition table -1 = available
+FORMAT_HOME=0
+
+SWAP_DRIVE=/dev/sda2 # IF SET TO -1 it ccreates file
+SWAP_SIZE=4 # SIZE IN GB for recreate partition table
+FORMAT_SWAP=1

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# ================== VARIABLES ================================
+XPINGS=0    # CONNECTION CHECK
+SPIN="/-\|" #SPINNER POSITION
+
+# COLORS {{{
+Bold=$(tput bold)
+Underline=$(tput sgr 0 1)
+Reset=$(tput sgr0)
+# Regular Colors
+Red=$(tput setaf 1)
+Green=$(tput setaf 2)
+Yellow=$(tput setaf 3)
+Blue=$(tput setaf 4)
+Purple=$(tput setaf 5)
+Cyan=$(tput setaf 6)
+White=$(tput setaf 7)
+# Bold
+BRed=${Bold}${Red}
+BGreen=${Bold}${Green}
+BYellow=${Bold}${Yellow}
+BBlue=${Bold}${Blue}
+BPurple=${Bold}${Purple}
+BCyan=${Bold}${Cyan}
+BWhite=${Bold}${White}
+#}}}
+# =============================================================
+
+# ================== PRINT STUFF ==============================
+pause_function() { #{{{
+	print_line
+	if [[ $AUTOMATIC_MODE -eq 0 ]]; then
+		read -e -sn 1 -p "Press enter to continue..."
+	fi
+}             #}}}
+
+print_line() { #{{{
+	printf "%$(tput cols)s\n" | tr ' ' '-'
+}               #}}}
+
+print_title() { #{{{
+	clear
+	print_line
+	echo -e "# ${Bold}$1${Reset}"
+	print_line
+	echo ""
+}              #}}}
+# =============================================================
+
+# ============================ CHECKS ==========================
+
+
+# =============================================================
