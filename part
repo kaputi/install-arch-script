@@ -11,14 +11,13 @@ fi
 mkfs.ext4 $ROOT_DRIVE
 mkfs.fat -F 32 $BOOT_DRIVE
 
-echo "1"
 mount $ROOT_DRIVE /mnt
-echo "2"
 mkdir /mnt/home 
-echo "3"
 mkdir /mnt/boot
-echo "4"
 mount $HOME_DRIVE /mnt/home
-echo "5"
 mount $BOOT_DRIVE /mnt/boot
-echo "6"
+
+
+
+mkswap $SWAP_DRIVE
+swapon $SWAP_DRIVE
