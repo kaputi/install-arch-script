@@ -85,8 +85,6 @@ else
   swapon $SWAP_DRIVE
 fi
 
-if
-
 #TODO SELECT MIRRORS
 
 print_title "Installing base system"
@@ -142,5 +140,5 @@ echo "9) Setup ssd"
 
 echo "10) enable services"
 
-#arch_chroot "systemctl enable NetworkManager"
-#arch_chroot "systemctl enable bluetooth"
+arch_chroot "systemctl enable NetworkManager"
+arch_chroot "systemctl enable bluetooth"
