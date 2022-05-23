@@ -21,7 +21,7 @@ yay -S zsh openssh lazygit lazydocker bat lsd bottom timeshift
 
 #zsh
 print_title "configure zsh"
-echo 'export ZDOTDIR=$HOME/.config/zsh' >> /etc/zsh/zshenv 
+sudo echo 'export ZDOTDIR=$HOME/.config/zsh' >> /etc/zsh/zshenv 
 
 #ssh 
 # print_title "ssh"
