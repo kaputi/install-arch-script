@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [[ -f $(pwd)/config ]]; then
+	source config
+else
+	echo "missing file: config"
+	exit 1
+fi
+
+
+mkfs.ext4 $ROOT_DRIVE
+mkfs.fat -F 32 $BOOT_DRIVE
+
+mount $ROOT_DRIVE /mnt
+mkdir /mnt/home /mnt/boot
+mount $HOME_DRIVE /mnt/home
+mount $BOOT_DIVE /mnt/boot
