@@ -39,7 +39,7 @@ timedatectl set-ntp true
 echo "3) Mount options"
 if [ $FORMAT_OPTIONS == 2 ]; then
   if [ $PARTITION_TABLE == 1 ]; then
-    # TODO create partitiontable
+    echo "paaaart"
   fi
 
   if [ $FORMAT_ROOT == 1 ];then
