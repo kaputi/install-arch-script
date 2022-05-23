@@ -39,6 +39,7 @@ timedatectl set-ntp true
 echo "3) Mount options"
 if [ $FORMAT_OPTIONS == 2 ]; then
   if [ $PARTITION_TABLE == 1 ]; then
+    #TODO
     echo "paaaart"
   fi
 
@@ -52,8 +53,9 @@ if [ $FORMAT_OPTIONS == 2 ]; then
 
 
   if [ $FORMAT_HOME == 1 ];then
-    # TODO ask if you are sure
+    #TODO ask if you are sure
     # mkfs.ext4 $HOME_DRIVE
+
   fi
 
   mount $ROOT_DRIVE /mnt
@@ -78,13 +80,13 @@ fi
 
 if
 
-# TODO SELECT MIRRORS
+#TODO SELECT MIRRORS
 
 echo "4) install base system"
 pacstrap /mnt base base-devel linux linux-firmware $CPU-ucode vi vim nano man-db man-pages texinfo networkmanager git bluez ranger wget
 
 genfstab -U /mnt >> /mnt/etc/fstab
-# TODO check if it creates entry for swapfile
+#TODO check if it creates entry for swapfile
 
 echo "5) setup locale, timezone, keymap"
 ln -sf /usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
@@ -123,13 +125,13 @@ echo "initrd /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch.con
 echo "options root=UUID=$(blkid -o value -s UUID ${ROOT_DRIVE}) rw" >> /mnt/boot/loader/entries/arch.conf
 
 echo "8) User setup"
-# TODO check if it needs to create a new home and change -M for -m
+#TODO check if it needs to create a new home and change -M for -m
 arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M"
 echo "input user passowrd"
 passwd $USERNAME
 
 echo "9) Setup ssd"
-# TODO
+#TODO
 
 echo "10) enable services"
 arch_chroot "systemctl enable NetworkManager"
