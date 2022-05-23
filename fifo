@@ -131,7 +131,7 @@ arch_chroot "passwd"
 arch_chroot "groupadd $GROUP"
 arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M $USERNAME"
 echo "input user passowrd"
-passwd $USERNAME
+arch_chroot "passwd $USERNAME"
 # Allow wheel to use sudo
 sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /mnt/etc/sudoers
 
