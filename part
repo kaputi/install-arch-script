@@ -20,5 +20,5 @@ mkdir /mnt/boot
 echo "4"
 mount $HOME_DRIVE /mnt/home
 echo "5"
-mount $BOOT_DIVE /mnt/boot
+mount $BOOT_DRIVE /mnt/boot
 echo "6"

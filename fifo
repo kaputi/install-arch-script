@@ -62,7 +62,7 @@ if [ $FORMAT_OPTIONS == 2 ]; then
   mount $ROOT_DRIVE /mnt
   mkdir /mnt/home /mnt/boot
   mount $HOME_DRIVE /mnt/home
-  mount $BOOT_DIVE /mnt/boot
+  mount $BOOT_DRIVE /mnt/boot
 fi
 
 if [ $SWAP_DRIVE == -1 ];then
