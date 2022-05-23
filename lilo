@@ -8,10 +8,6 @@ else
 	exit 1
 fi
 
-# Allow wheel to use sudo
-print_title "Sudo"
-sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /etc/sudoers
-  
 #aur helper
 print_title "yay"
 git clone  /tmp/yay
