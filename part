@@ -12,6 +12,7 @@ mkfs.ext4 $ROOT_DRIVE
 mkfs.fat -F 32 $BOOT_DRIVE
 
 mount $ROOT_DRIVE /mnt
-mkdir /mnt/home /mnt/boot
+mkdir /mnt/home 
+mkdir /mnt/boot
 mount $HOME_DRIVE /mnt/home
 mount $BOOT_DIVE /mnt/boot
