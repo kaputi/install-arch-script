@@ -28,29 +28,35 @@ arch_chroot() { #{{{
 pause_function
 pacman -Sy
 
-print_title "ARCHLINUX ULTIMATE INSTALL - https://github.com/helmuthdu/aui"
+print_title "ARCHLINUX INSTALL"
 
-echo "1) loadkeys"
+
 loadkeys $KEYMAP
+echo "Setup keymap"
+print_line
 
-echo "2) update system clock"
+
 timedatectl set-ntp true
+echo "update hw clock"
+print_line
 
-echo "3) Mount options"
+print_title "Mount Options"
 if [ $FORMAT_OPTIONS == 2 ]; then
   if [ $PARTITION_TABLE == 1 ]; then
     #TODO
-    echo "paaaart"
+    print_line
   fi
 
   if [ $FORMAT_ROOT == 1 ];then
     mkfs.ext4 $ROOT_DRIVE
     echo "root formated"
+    print_line
   fi
 
   if [ $FORMAT_BOOT == 1 ];then
     mkfs.fat -F 32 $BOOT_DRIVE
     echo "boot formated"
+    print_line
   fi
 
 
@@ -83,7 +89,7 @@ if
 
 #TODO SELECT MIRRORS
 
-echo "4) install base system"
+print_title "Installing base system"
 pacstrap /mnt base base-devel linux linux-firmware $CPU-ucode vi vim nano man-db man-pages texinfo networkmanager git bluez ranger wget
 
 genfstab -U /mnt >> /mnt/etc/fstab
