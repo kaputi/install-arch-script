@@ -37,21 +37,21 @@ echo "2) update system clock"
 timedatectl set-ntp true
 
 echo "3) Mount options"
-if [ $FORMAT_OPTIONS = 2 ];then
-  if[ $PARTITION_TABLE = 1 ];then
+if [ $FORMAT_OPTIONS == 2 ]; then
+  if[ $PARTITION_TABLE == 1 ]; then
     # TODO create partitiontable
   fi
 
-  if[ $FORMAT_ROOT = 1 ];then
+  if[ $FORMAT_ROOT == 1 ];then
     mkfs.ext4 $ROOT_DRIVE
   fi
 
-  if[ $FORMAT_BOOT = 1 ];then
+  if[ $FORMAT_BOOT == 1 ];then
     mkfs.fat -F 32 $BOOT_DRIVE
   fi
 
 
-  if[ $FORMAT_HOME = 1 ];then
+  if[ $FORMAT_HOME == 1 ];then
     # TODO ask if you are sure
     # mkfs.ext4 $HOME_DRIVE
   fi
@@ -62,15 +62,15 @@ if [ $FORMAT_OPTIONS = 2 ];then
   mount $BOOT_DIVE /mnt/boot
 fi
 
-if[ $SWAP_DRIVE = -1 ];then
-  if[ $FORMAT_SWAP = 1 ];then
+if[ $SWAP_DRIVE == -1 ];then
+  if[ $FORMAT_SWAP == 1 ];then
     dd if=/dev/zero of=/mnt/swapfile bs=1G count=$SWAP_SIZE status=progress
     chmod 0600 /mnt/swapfile
     mkswap -U clear /mnt/swapfile
   fi
   swapon /mnt/swapfile
 else
-  if[ $FORMAT_SWAP = 1 ];then
+  if[ $FORMAT_SWAP == 1 ];then
     mkswap $SWAP_DRIVE
   fi
   swapon $SWAP_DRIVE
