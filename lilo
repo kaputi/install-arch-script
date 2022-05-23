@@ -11,7 +11,7 @@ fi
 #aur helper
 print_title "yay"
 git clone  /tmp/yay
-cd /tmp/yay
+cd https://aur.archlinux.org/yay.git /tmp/yay
 makepkg -si
 
 
