@@ -93,7 +93,6 @@ pacstrap /mnt base base-devel linux linux-firmware $CPU-ucode vi vim nano man-db
 genfstab -U /mnt >> /mnt/etc/fstab
 #TODO check if it creates entry for swapfile
 
-echo "5) setup locale, timezone, keymap"
 ln -sf /usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
 arch_chroot "hwclock --systohc"
 
@@ -102,12 +101,9 @@ arch_chroot "locale-gen"
 
 echo "KEYMAP=$KEYMAP" >> /mnt/vconsole.conf
 
-echo "5) mkinitcpio"
 arch_chroot "mkinitcpio -P"
 
-echo "6) Root password"
-echo "input root passowrd"
-arch_chroot "passwd"
+
 
 echo "7) Bootloader"
 arch_chroot "bootctl install"
@@ -129,17 +125,16 @@ echo "initrd /$CPU-ucode.img" >> /mnt/boot/loader/entries/arch.conf
 echo "initrd /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch.conf
 echo "options root=UUID=$(blkid -o value -s UUID ${ROOT_DRIVE}) rw" >> /mnt/boot/loader/entries/arch.conf
 
-echo "8) User setup"
+print_title "ROOT and User setup"
 #TODO check if it needs to create a new home and change -M for -m
+echo "input root passowrd"
+arch_chroot "passwd"
+
 arch_chroot "groupadd $GROUP"
 arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M $USERNAME"
 echo "input user passowrd"
 passwd $USERNAME
 
-echo "9) Setup ssd"
-#TODO
-
-echo "10) enable services"
-
+print_title "enable services"
 arch_chroot "systemctl enable NetworkManager"
 arch_chroot "systemctl enable bluetooth"
