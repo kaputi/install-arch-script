@@ -140,7 +140,10 @@ arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M $USERNAME"
 echo "input user passowrd"
 arch_chroot "passwd $USERNAME"
 # Allow wheel to use sudo
-sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /mnt/etc/sudoers
+# sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /mnt/etc/sudoers
+cp /mnt/etc/sudoers /mnt/etc/sudoers.cp
+echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers
+arch_chroot "visudo -q -c -s -f /etc/sudoers"
 
 print_title "enable services"
 arch_chroot "systemctl enable NetworkManager"
