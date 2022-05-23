@@ -131,7 +131,8 @@ echo "options root=UUID=$(blkid -o value -s UUID ${ROOT_DRIVE}) rw" >> /mnt/boot
 
 echo "8) User setup"
 #TODO check if it needs to create a new home and change -M for -m
-arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M"
+arch_chroot "groupadd $GROUP"
+arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M $USERNAME"
 echo "input user passowrd"
 passwd $USERNAME
 

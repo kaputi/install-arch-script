@@ -7,7 +7,7 @@ USERNAME=eduardo
 CREATEHOME=0
 HOME_DIR=/home/eduardo
 GROUP=eduardo
-OTHER_GROUPS=wheel,docker
+OTHER_GROUPS=wheel #TODO add docker, if group doesnt exists it fails
 
 TIMEZONE=Europe/Dublin
 KEYMAP=uk
