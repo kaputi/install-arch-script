@@ -17,11 +17,15 @@ makepkg -si
 
 print_title "installing packages"
 yay -Sy
-yay -S zsh openssh lazygit lazydocker bat lsd bottom timeshift
+# yay -S zsh openssh lazygit lazydocker bat lsd bottom timeshift
 
 #zsh
 print_title "configure zsh"
-sudo echo 'export ZDOTDIR=$HOME/.config/zsh' >> /etc/zsh/zshenv 
+read -s -p "pass? "
+sudopas=${REPLY}; unset REPLY
+#echo $sudopas | $(which sudo) --stdin ls -l /root/tmp
+$(which sudo) echo 'export ZDOTDIR=$HOME/.config/zsh' >> /etc/zsh/zshenv 
+unset sudopas
 
 #ssh 
 # print_title "ssh"
