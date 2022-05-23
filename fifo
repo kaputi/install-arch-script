@@ -103,9 +103,7 @@ echo "KEYMAP=$KEYMAP" >> /mnt/vconsole.conf
 
 arch_chroot "mkinitcpio -P"
 
-
-
-echo "7) Bootloader"
+print_title "bootloader"
 arch_chroot "bootctl install"
 rm /mnt/boot/loader/loader.conf -f
 echo "default arch.conf" >> /mnt/boot/loader/loader.conf
@@ -134,6 +132,8 @@ arch_chroot "groupadd $GROUP"
 arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M $USERNAME"
 echo "input user passowrd"
 passwd $USERNAME
+# Allow wheel to use sudo
+sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /mnt/etc/sudoers
 
 print_title "enable services"
 arch_chroot "systemctl enable NetworkManager"
