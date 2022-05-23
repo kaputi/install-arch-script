@@ -99,7 +99,9 @@ arch_chroot "hwclock --systohc"
 echo "LANG=$LOCALE" >> /mnt/etc/locale.conf
 arch_chroot "locale-gen"
 
-echo "KEYMAP=$KEYMAP" >> /mnt/vconsole.conf
+echo "KEYMAP=$KEYMAP" >> /mnt/etc/vconsole.conf
+
+echo $HOSTNAME >> /mnt/etc/hostname
 
 arch_chroot "mkinitcpio -P"
 
@@ -128,6 +130,7 @@ print_title "ROOT and User setup"
 echo "input root passowrd"
 arch_chroot "passwd"
 
+print_line
 arch_chroot "groupadd $GROUP"
 arch_chroot "useradd --home $HOME_DIR -g $GROUP -G $OTHER_GROUPS -M $USERNAME"
 echo "input user passowrd"
