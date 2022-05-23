@@ -52,10 +52,10 @@ if [ $FORMAT_OPTIONS == 2 ]; then
   fi
 
 
-  if [ $FORMAT_HOME == 1 ];then
+  #if [ $FORMAT_HOME == 1 ];then
     #TODO ask if you are sure
     #mkfs.ext4 $HOME_DRIVE
-  fi
+  #fi
 
   mount $ROOT_DRIVE /mnt
   mkdir /mnt/home /mnt/boot
