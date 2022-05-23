@@ -54,8 +54,7 @@ if [ $FORMAT_OPTIONS == 2 ]; then
 
   if [ $FORMAT_HOME == 1 ];then
     #TODO ask if you are sure
-    # mkfs.ext4 $HOME_DRIVE
-
+    #mkfs.ext4 $HOME_DRIVE
   fi
 
   mount $ROOT_DRIVE /mnt
